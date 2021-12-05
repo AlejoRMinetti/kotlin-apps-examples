@@ -19,10 +19,13 @@ class MainActivity : AppCompatActivity() {
         rollButton.setOnClickListener { rollDice() }
     }
 
+
+    // global variable for rollDice
+    private var lastRoll: Int? = null
+    private var sameRolledCounter: Int = 1
     /**
      * Roll the dice and update the screen with the result.
      */
-    private var lastRoll: Int? = null
     private fun rollDice() {
         // Create new Dice object with 6 sides and roll it
         val dice = Dice(6)
@@ -30,9 +33,15 @@ class MainActivity : AppCompatActivity() {
 
         // additional functionality: if roll same number again, send a Toast
         if ( diceRoll == lastRoll){
-            Toast.makeText(this, "$diceRoll rolled again!", Toast.LENGTH_SHORT).show()
+            if (sameRolledCounter == 1)
+                Toast.makeText(this, "$diceRoll rolled again!", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "$diceRoll rolled again! for $sameRolledCounter times!!", Toast.LENGTH_SHORT).show()
+            sameRolledCounter ++
+        }else{
+            lastRoll = diceRoll
+            sameRolledCounter = 1
         }
-        lastRoll = diceRoll
 
         // Update the screen with the dice roll
         val resultTextView: TextView = findViewById(R.id.textView)
